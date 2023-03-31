@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Movie Library</title>
+    <style>
+      img{
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        padding: 5px;
+        width: 150px;
+        height:230px;
+       }
+
+      #lib{
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;  
+        flex-wrap: wrap; 
+      }
+    
+    </style>
+  </head>
+  <body>
+    <a href="/dashboard">Back</a>
+    <h1>My Movie Library</h1>
+    <% if (message) { %>
+      <p><%= message %></p>
+    <% } %>
+    <div id="lib">
+      <% movies.forEach(movie => { %>
+        <div>
+          <!-- <h2><%= movie.title %></h2> -->
+          <img src="<%= 'https://image.tmdb.org/t/p/w500' + movie.poster_path %>" alt="<%= movie.title %> Poster">
+          <!-- <p><strong>Release Date:</strong> <%= movie.release_date %></p>
+          <p><strong>Overview:</strong> <%= movie.overview %></p> -->
+          <form method="post" action="/remove-movie">
+            <input type="hidden" name="movieId" value="<%= movie.id %>">
+            <button type="submit">Remove</button>
+          </form>
+        </div>
+      <% }); %>
+    </div>  
+  </body>
+</html>

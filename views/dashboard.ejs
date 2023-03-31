@@ -1,0 +1,35 @@
+
+<h1>Welcome, <%= username %>!</h1> 
+<br>
+<br>
+<a href="/logout">Logout</a>
+<br>
+<br>
+<a href="/search">Search Movie</a>
+<br>
+<br>
+<a href="/movie-of-the-day">Movie of the day!</a>
+<br>
+<br>
+<a href="/user">User Profile</a>
+<br>
+<br>
+<a href="/library">Library</a>
+<br>
+<br>
+<a href="/watchlist">Watchlist</a>
+
+
+
+
+<% if (movieDetails) { %>
+  <h2>Movie Details:</h2>
+  <p>Title: <%= movieDetails.title %></p>
+  <p>Release Date: <%= movieDetails.release_date %></p>
+  <p>Overview: <%= movieDetails.overview %></p>
+  <% if (movieDetails.poster_path) { %>
+    <img src="https://image.tmdb.org/t/p/w500<%= movieDetails.poster_path %>" alt="<%= movieDetails.title %> poster" width="250" height="320">
+  <% } %>
+<% } %>
+
+

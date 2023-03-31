@@ -1,0 +1,24 @@
+{
+  "name": "bing-auth-app",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.2",
+    "ejs": "^3.1.8",
+    "eslint": "^8.37.0",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.2.0",
+    "node-cache": "^5.1.2",
+    "node-fetch": "^3.1.0"
+  }
+}

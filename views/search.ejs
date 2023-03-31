@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie App</title>
+  <script>
+   function redirectToMoviePage(id) {
+  // Redirect to mov.html with the movie ID in the URL query string
+  window.location.href = `/views/movie-details.html?id=${id}`;
+}
+  </script>
+  <script src="app.js" defer></script>
+  <style>
+     
+    @font-face{
+            font-family:myHeadingFont;
+            src: url(AlfaSlabOne-Regular.ttf);
+            }
+        
+main{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+main div{
+    width: 250px;
+    height: 320px;
+    margin: 19px 15px;
+    background: red;
+}
+img{
+    width: 100%;
+    height: 89%;
+    object-fit: cover;
+}
+h2{
+    font-size: 15px;
+    font-family: sans-serif;
+    font-weight: bold;
+    text-align: center;
+    color: #fff;
+    
+}
+#head{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family:myHeadingFont;
+            
+}
+ 
+
+  </style>
+</head>
+<body>
+  <a href="/dashboard">Back</a>
+
+  <!-- The header that contains the title and the Search bar -->
+  <header>
+    <a href="/logout">Logout</a>
+    <div id="head">
+      <div>SEARCH MOVIES:</div>
+      <br>
+      <form id="form">
+        <input type="text" id="search" class="search"/>
+      </form>
+    </div>
+  </header>
+  <!-- The main tag where we are going to put all our movies that we got from the API -->
+  <main id="main"></main>
+  <script>
+   // API information.
+const apiUrl =
+  "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=cb271ca40b23866a540695b98e939277&page=1";
+const IMGPATH = "https://image.tmdb.org/t/p/w1280";
+const SEARCHAPI =
+  "https://api.themoviedb.org/3/search/movie?&api_key=cb271ca40b23866a540695b98e939277&query=";
+// Selecting our Elements.
+const main = document.getElementById("main");
+const form = document.getElementById("form");
+const search = document.getElementById("search");
+
+// Call the showMovies function that requests the movie data from the Api using fetch.
+// Then it puts those data in the main HTML tag by creating elements for those data.
+showMovies(apiUrl);
+
+function showMovies(url) {
+  fetch(url)
+    .then((res) => res.json())
+    .then(function (data) {
+      data.results.forEach((element) => {
+        // Creating elements for our data inside the main tag.
+        const el = document.createElement("div");
+        const image = document.createElement("img");
+        const text = document.createElement("h2");
+        const link = document.createElement("a");
+        const add = document.createElement("button");
+
+        link.href = `/mov?id=${element.id}`;
+        link.appendChild(text);
+        el.appendChild(link);
+        image.src = IMGPATH + element.poster_path;
+        text.innerHTML = `${element.title}`;
+        el.appendChild(image);
+        main.appendChild(el);
+      });
+    });
+}
+
+// Prevent the form from submitting if the search bar is empty.
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  main.innerHTML = "";
+
+  const searchTerm = search.value;
+  /* Adding the value written in the search bar to the search API,
+    in order to get the movies we search for. */
+  if (searchTerm) {
+    showMovies(SEARCHAPI + searchTerm);
+    search.value = "";
+  }
+});
+
+
+
+
+  </script>
+</body>
+</html>
+
+ 

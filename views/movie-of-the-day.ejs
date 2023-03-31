@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Movie of the Day</title>
+  </head>
+  <body>
+    <a href="/dashboard">Back</a>
+    <h1>Movie of the Day</h1>
+    <% if (movie) { %>
+      <h2><%= movie.title %></h2>
+      <p><%= movie.overview %></p>
+      <p>Release Date: <%= movie.release_date %></p>
+      <img src="<%= 'https://image.tmdb.org/t/p/w500' + movie.poster_path %>" alt="<%= movie.title %> Poster">
+    <% } else { %>
+      <p>No movie of the day found.</p>
+    <% } %>
+    
+
+
+  </body>
+</html>
