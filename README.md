@@ -28,6 +28,8 @@ DB_USER: database user name
 DB_PASSWORD: database user password
 DB_NAME: name of the database
 TMDB_API_KEY: API key for TMDB API
+
+
 Finally, run the app using node app.js and access it on your browser at http://localhost:3000.
 ![441002](https://user-images.githubusercontent.com/28853520/229155989-39bda237-4b83-444d-9f5f-03822e150bf7.jpg)
 
