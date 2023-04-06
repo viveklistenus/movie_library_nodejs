@@ -1,3 +1,4 @@
+![1680791463812](https://user-images.githubusercontent.com/28853520/230410089-e6585121-9dc3-4831-a3c5-78c231e6d6dd.jpg)
 # Movie Library RDBMS Project
 
 This is a movie library management system built on Node.js and a MySQL database, with a REST API and integration with the TMDB API for movie data.
