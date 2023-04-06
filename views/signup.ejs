@@ -23,12 +23,12 @@
 
         <select name="genre" id="fgenre">
           	<option name="Horror">Horror</option>
-  			<option value="Comedy">Comedy</option>
-  			<option value="Drama">Drama</option>
-  			<option value="Action">Action</option>
+  			<option name="Comedy">Comedy</option>
+  			<option name="Drama">Drama</option>
+  			<option ="Action">Action</option>
 		</select>
 
-		
+		<br>
 
 		
 <label for="country">Country:</label>
@@ -39,35 +39,11 @@
     <option value="<%= country %>"><%= country %></option>
   <% } %>
 </select>
+<br>
 
-<script>
-  const countrySelect = document.getElementById('country-select');
-  const countryInput = document.getElementById('country-input');
-  const countries = ['India', 'United States', 'China', 'Brazil', 'Russia', 'Japan', 'Mexico', 'Philippines', 'Vietnam', 'Ethiopia', 'Egypt', 'Germany', 'Iran', 'Turkey', 'Democratic Republic of the Congo', 'Thailand', 'France', 'United Kingdom', 'Italy', 'Tanzania'];
-  
-  function filterCountries() {
-    const filter = countryInput.value.toUpperCase();
-    const filteredCountries = countries.filter(country => country.toUpperCase().includes(filter));
-    updateOptions(filteredCountries);
-  }
-  
-  function updateOptions(filteredCountries) {
-    countrySelect.innerHTML = '';
-    for (const country of filteredCountries) {
-      const option = document.createElement('option');
-      option.value = country;
-      option.text = country;
-      countrySelect.add(option);
-    }
-  }
-  
-  function setCountry() {
-    countryInput.value = countrySelect.value;
-  }
-</script>
 		<label>Password:</label>
 		<input type="password" name="password"><br>
-		  
+		  <br>
 		<label>Confirm Password:</label>
 		<input type="password" name="cpass"><br>
 
@@ -75,5 +51,31 @@
 		<input type="submit" value="Signup">
 	</form>
 	<p>Already have an account? <a href="/">Login</a></p>
+
+  <script>
+    const countrySelect = document.getElementById('country-select');
+    const countryInput = document.getElementById('country-input');
+    const countries = ['India', 'United States', 'China', 'Brazil', 'Russia', 'Japan', 'Mexico', 'Philippines', 'Vietnam', 'Ethiopia', 'Egypt', 'Germany', 'Iran', 'Turkey', 'Democratic Republic of the Congo', 'Thailand', 'France', 'United Kingdom', 'Italy', 'Tanzania'];
+    
+    function filterCountries() {
+      const filter = countryInput.value.toUpperCase();
+      const filteredCountries = countries.filter(country => country.toUpperCase().includes(filter));
+      updateOptions(filteredCountries);
+    }
+    
+    function updateOptions(filteredCountries) {
+      countrySelect.innerHTML = '';
+      for (const country of filteredCountries) {
+        const option = document.createElement('option');
+        option.value = country;
+        option.text = country;
+        countrySelect.add(option);
+      }
+    }
+    
+    function setCountry() {
+      countryInput.value = countrySelect.value;
+    }
+  </script>
 </body>
 </html>

@@ -7,14 +7,6 @@ import bcrypt from 'bcrypt';
 import fetch from 'node-fetch';
 import NodeCache from 'node-cache';
 
-
-//const express = require('express');
-//const session = require('express-session');
-// const mysql = require('mysql2');
-// const bodyParser = require('body-parser');
-// const axios = require('axios');
-// const bcrypt = require('bcrypt');
-
 const saltRounds = 10;
 
 const app = express();
@@ -62,6 +54,7 @@ app.use(session({
 
 app.use(express.static('public'));
 
+
 app.get('/search', (req, res) => {
   if (req.session.loggedin) {
   res.render('search');}
@@ -69,6 +62,16 @@ app.get('/search', (req, res) => {
     return res.send('Please login to view this page! <a href="/">Login here</a>');
   }
 });
+
+
+app.get('/tv_search', (req, res) => {
+  if (req.session.loggedin) {
+  res.render('tv_search');}
+  else{
+    return res.send('Please login to view this page! <a href="/">Login here</a>');
+  }
+});
+
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -313,6 +316,21 @@ app.post('/movie-details', async (req, res) => {
     }
   });
   
+  // Update user profile route
+app.post('/user/update', (req, res) => {
+  const { name, age, email, fgenre, country } = req.body;
+  const username = req.session.username;
+  
+  connection.query('UPDATE user_data SET name=?, age=?, email=?, fgenre=?, country=? WHERE username=?', [name, age, email, fgenre, country, username], (err, results) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('An error occurred while updating user data.');
+    } else {
+      res.redirect('/user');
+    }
+  });
+});
+
 
   app.post('/add-movie', (req, res) => {
     if (req.session.loggedin) {

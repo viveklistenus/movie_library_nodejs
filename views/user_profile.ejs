@@ -7,12 +7,27 @@
     <a href="/dashboard">Back</a>
     <h1>User Profile</h1>
     <p>Welcome <%= userData.name %>!</p>
-    <ul>
-      <li><strong>Username:</strong> <%= userData.username %></li>
-      <li><strong>Age:</strong> <%= userData.age %></li>
-      <li><strong>Email:</strong> <%= userData.email %></li>
-      <li><strong>Favorite Genre:</strong> <%= userData.fgenre %></li>
-      <li><strong>Country:</strong> <%= userData.country %></li>
-    </ul>
+    
+    <form method="POST" action="/user/update">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" value="<%= userData.username %>" readonly>
+      <br>
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" value="<%= userData.name %>">
+      <br>
+      <label for="age">Age:</label>
+      <input type="number" id="age" name="age" value="<%= userData.age %>">
+      <br>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" value="<%= userData.email %>">
+      <br>
+      <label for="fgenre">Favorite Genre:</label>
+      <input type="text" id="fgenre" name="fgenre" value="<%= userData.fgenre %>">
+      <br>
+      <label for="country">Country:</label>
+      <input type="text" id="country" name="country" value="<%= userData.country %>">
+      <br>
+      <button type="submit">Update Profile</button>
+    </form>
   </body>
 </html>

@@ -7,7 +7,7 @@
   <script>
    function redirectToMoviePage(id) {
   // Redirect to mov.html with the movie ID in the URL query string
-  window.location.href = `/views/movie-details.ejs?id=${id}`;
+  window.location.href = `/views/tv-details.ejs?id=${id}`;
 }
   </script>
   <script src="app.js" defer></script>
@@ -73,10 +73,10 @@ h2{
   <script>
    // API information.
 const apiUrl =
-  "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=cb271ca40b23866a540695b98e939277&page=1";
+  "https://api.themoviedb.org/3/discover/tv?sort_by=popularity.desc&api_key=cb271ca40b23866a540695b98e939277&page=1";
 const IMGPATH = "https://image.tmdb.org/t/p/w1280";
 const SEARCHAPI =
-  "https://api.themoviedb.org/3/search/movie?&api_key=cb271ca40b23866a540695b98e939277&query=";
+  "https://api.themoviedb.org/3/search/tv?&api_key=cb271ca40b23866a540695b98e939277&query=";
 // Selecting our Elements.
 const main = document.getElementById("main");
 const form = document.getElementById("form");
