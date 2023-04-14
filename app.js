@@ -505,87 +505,86 @@ app.post('/user/update', (req, res) => {
   });
 });
 
+app.post('/add-movie', (req, res) => {
+  if (req.session.loggedin) {
+    const username = req.session.username;
+    console.log(username);
+    const movieId = req.body.movieId;
 
-  app.post('/add-movie', (req, res) => {
-    if (req.session.loggedin) {
-      const username = req.session.username;
-      console.log(username);
-      const movieId = req.body.movieId;
-  
-      if (!movieId) {
-        return res.status(400).send('Movie ID cannot be empty');
-      }
-  
-      const checkSql = 'SELECT movie_id FROM user_movie_data WHERE username = ? AND movie_id = ?';
-      const checkValues = [username, movieId];
-  
-      connection.query(checkSql, checkValues, (err, results) => {
-        if (err) {
-          res.render('library', { message: 'An error occurred while checking for the movie.', movies: [] });
-        } else if (results.length > 0) {
-          const selectSql = 'SELECT movie_id FROM user_movie_data WHERE username = ?';
-          const selectValues = [username];
-  
-          connection.query(selectSql, selectValues, (err, results) => {
-            if (err) {
-              res.render('library', { message: 'An error occurred while retrieving your library.', movies: [] });
-            } else {
-              const movieIds = results.map(result => result.movie_id);
-              const fetchPromises = movieIds.map(movieId => {
-                const tmdbUrl = `https://api.themoviedb.org/3/movie/${movieId}?api_key=f7b138552a3ba34c25115cff576920df&language=en-US`;
-                return fetch(tmdbUrl).then(response => response.json());
-              });
-  
-              Promise.all(fetchPromises)
-                .then(movies => {
-                  res.render('library', { movies, message: `Already Movie could not be added to your library.`, error: true });
-
-                })
-                .catch(err => {
-                  console.error(err);
-                  res.render('library', { message: 'An error occurred while retrieving movie details.', movies: [] });
-                });
-            }
-          });
-        } else {
-          const insertSql = 'INSERT INTO user_movie_data (username, movie_id) VALUES (?, ?)';
-          const insertValues = [username, movieId];
-  
-          connection.query(insertSql, insertValues, (err, result) => {
-            if (err) {
-              res.render('library', { message: 'An error occurred while adding the movie to the library.', movies: [] });
-            } else {
-              const selectSql = 'SELECT movie_id FROM user_movie_data WHERE username = ?';
-              const selectValues = [username];
-  
-              connection.query(selectSql, selectValues, (err, results) => {
-                if (err) {
-                  res.render('library', { message: 'An error occurred while retrieving your library.', movies: [] });
-                } else {
-                  const movieIds = results.map(result => result.movie_id);
-                  const fetchPromises = movieIds.map(movieId => {
-                    const tmdbUrl = `https://api.themoviedb.org/3/movie/${movieId}?api_key=f7b138552a3ba34c25115cff576920df&language=en-US`;
-                    return fetch(tmdbUrl).then(response => response.json());
-                  });
-  
-                  Promise.all(fetchPromises)
-                    .then(movies => {
-                      res.render('library', { movies, message: 'Movie added to your library.' });
-                    })
-                    .catch(err => {
-                      console.error(err);
-                      res.render('library', { message: 'An error occurred while retrieving movie details.', movies: [] });
-                    });
-                }
-              });
-            }
-          });
-        }
-      });
-    } else {
-      return res.send('Please login to view this page! <a href="/">Login here</a>');
+    if (!movieId) {
+      return res.status(400).send('Movie ID cannot be empty');
     }
-  });
+
+    const checkSql = 'SELECT movie_id FROM user_movie_data WHERE username = ? AND movie_id = ?';
+    const checkValues = [username, movieId];
+
+    connection.query(checkSql, checkValues, (err, results) => {
+      if (err) {
+        res.render('library', { message: 'An error occurred while checking for the movie.', movies: [] });
+      } else if (results.length > 0) {
+        const selectSql = 'SELECT movie_id FROM user_movie_data WHERE username = ?';
+        const selectValues = [username];
+
+        connection.query(selectSql, selectValues, (err, results) => {
+          if (err) {
+            res.render('library', { message: 'An error occurred while retrieving your library.', movies: [] });
+          } else {
+            const movieIds = results.map(result => result.movie_id);
+            const fetchPromises = movieIds.map(movieId => {
+              const tmdbUrl = `https://api.themoviedb.org/3/movie/${movieId}?api_key=f7b138552a3ba34c25115cff576920df&language=en-US`;
+              return fetch(tmdbUrl).then(response => response.json());
+            });
+
+            Promise.all(fetchPromises)
+              .then(movies => {
+                res.render('library', { movies, message: ` added to your library. `, error: true });
+              })
+              .catch(err => {
+                console.error(err);
+                res.render('library', { movies, message: `Movie could not be added to your library.`, error: true });
+              });
+          }
+        });
+      } else {
+        const insertSql = 'INSERT INTO user_movie_data (username, movie_id) VALUES (?, ?)';
+        const insertValues = [username, movieId];
+
+        connection.query(insertSql, insertValues, (err, result) => {
+          if (err) {
+            res.render('library', { message: 'An error occurred while adding the movie to the library.', movies: [] });
+          } else {
+            const selectSql = 'SELECT movie_id FROM user_movie_data WHERE username = ?';
+            const selectValues = [username];
+
+            connection.query(selectSql, selectValues, (err, results) => {
+              if (err) {
+                res.render('library', { message: 'An error occurred while retrieving your library.', movies: [] });
+              } else {
+                const movieIds = results.map(result => result.movie_id);
+                const fetchPromises = movieIds.map(movieId => {
+                  const tmdbUrl = `https://api.themoviedb.org/3/movie/${movieId}?api_key=f7b138552a3ba34c25115cff576920df&language=en-US`;
+                  return fetch(tmdbUrl).then(response => response.json());
+                });
+
+                Promise.all(fetchPromises)
+                  .then(movies => {
+                    res.render('library', { movies, message: 'Movie added to your library.' });
+                  })
+                  .catch(err => {
+                    console.error(err);
+                    res.render('library', { message: 'An error occurred while retrieving movie details.', movies: [] });
+                  });
+              }
+            });
+          }
+        });
+      }
+    });
+  } else {
+    return res.send('Please login to view this page! <a href="/">Login here</a>');
+  }
+});
+
 
 
   app.get('/tv-details', function(req, res) {
