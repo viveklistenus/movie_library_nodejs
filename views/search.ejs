@@ -98,7 +98,7 @@ function showMovies(url) {
         const link = document.createElement("a");
         const add = document.createElement("button");
 
-        link.href = `/mov?id=${element.id}`;
+        link.href = `/movie-details1?id=${element.id}`;
         link.appendChild(text);
         el.appendChild(link);
         image.src = IMGPATH + element.poster_path;

@@ -1,0 +1,78 @@
+<style>
+ .container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.card {
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.card-text {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+.media {
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.media-body {
+  font-size: 1.2rem;
+}
+
+.form-group {
+  margin-top: 1.5rem;
+}
+
+.btn-primary {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  padding: 0.5rem 2rem;
+}
+
+</style>
+<div class="container d-flex flex-column align-items-center">
+  <h2><a href="/dashboard">BACK</a></h2>
+  <br>
+  
+  <h2><a href="/logout">LOGOUT</a></h2>
+  <h1>Light's Out - Discussions</h1>
+  <% discussions.forEach(function(discussion) { %>
+    <div class="card my-4 border">
+      <div class="card-body">
+        <h2>Discussion Number :<%= discussion.id %></h2>
+        <h5 class="card-title"><%= discussion.title %></h5>
+        <% const movie = movies.find(function(movie) { return movie.id === discussion.movie_id; }); %>
+        <p class="card-text">Movie: <%= movie.title %></p>
+        <img src="<%= movie.poster %>" class="img-fluid mb-3" alt="Movie Poster" style="height: 300px; width: 300px;">
+        <% discussion.threads.forEach(function(thread) { %>
+          <div class="media my-3">
+           
+            <div class="media-body">
+              <h5 class="mt-0"><%= thread.username %></h5>
+              <p><%= thread.discussion_text %></p>
+              <p><small class="text-muted"><%= thread.date_created.toLocaleString() %></small></p>
+            </div>
+          </div>
+        <% }); %>
+        <form method="post" action="/discussions/threads/new">
+          <div class="form-group">
+            <label for="discussion_text">Add a new discussion thread:</label>
+            <textarea class="form-control" id="discussion_text" name="discussion_text" rows="3"></textarea>
+            <input type="hidden" id="discussion_id" name="discussion_id" value="<%= discussion.id %>">
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
+  <% }); %>
+</div>
+

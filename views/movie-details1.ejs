@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <style>
+      img {
+            width: 300px;
+            height: 450px;
+            object-fit: cover;
+        }
+    </style>
+  </head>
+ 
+  <body>
+    <h1><%= title %> (<%= release_year %>)</h1>
+    <img src="<%= poster %>" alt="Movie Poster">
+    <p><strong>Genres:</strong> <%= genres %></p>
+    <p><strong>Director:</strong> <%= director %></p>
+    <p><strong>Rating:</strong> <%= rating %></p>
+    <p><strong>Description:</strong> <%= description %></p>
+    <h2>Cast</h2>
+    
+<ul>
+  <% for (let i = 0; i < Math.min(cast.length, 5); i++) { %>
+    
+    <li><%= cast[i].name %> as <%= cast[i].character %></li>
+  <% } %>
+  <% if (cast.length > 5) { %>
+    <li>and more...</li>
+  <% } %>
+</ul>
+
+    <h2>Reviews</h2>
+    <ul>
+      <% for (let i = 0; i < reviews.length; i++) { %>
+        <li><%= reviews[i].review %> - <%= reviews[i].username %></li>
+      <% } %>
+    </ul>
+
+    <form id="add-review-form" action="/add-review" method="POST">
+      <input type="hidden" name="movieId" value="<%= movieId %>">
+      <label for="review">Add Review:</label>
+      <textarea name="review" id="review" rows="4" cols="50"></textarea>
+      <button type="submit">Submit Review</button>
+    </form>
+
+
+    <form method="POST" action="/add-discussion">
+      <input type="hidden" name="movieId" value="<%= movieId %>">
+      
+      <textarea name="discussion_text"></textarea>
+      <button type="submit">Start Discussion</button>
+    </form>
+  
+    
+    
+
+    <form id="add-movie-btn" action="/add-movie" method="POST">
+        <input type="hidden" name="movieId" value="<%= movieId %>">
+        <button type="submit">Add to My Library</button>
+    </form>
+
+    <form id="add-watch-btn" action="/add-watchlist" method="POST">
+      <input type="hidden" name="movieId" value="<%= movieId %>">
+      <button type="submit">Add to My Watchlist</button>
+  </form>
+  </body>
+  <script>
+
+//review code 
+    
+const addReviewForm = document.getElementById('add-review-form');
+const success2Msg = document.getElementById('success2-msg');
+
+addReviewForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+
+  const movieId = new URLSearchParams(window.location.search).get('id');
+ 
+  const review = document.getElementById('review').value;
+  
+    // Send a POST request with the movieId and review data
+    fetch('/add-review', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      movieId: movieId,
+      review: review
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+    success2Msg.innerText = 'Review added successfully!';
+  })
+  .catch(error => {
+    console.error(error);
+    success2Msg.innerText = 'An error occurred while adding the review.';
+  });
+
+});
+    
+    const movieId = new URLSearchParams(window.location.search).get('id');
+    document.querySelector('#add-movie-btn input[name="movieId"]').value = movieId;
+    document.querySelector('#add-watch-btn input[name="movieId"]').value = movieId;
+    
+        
+    const addMovieBtn = document.getElementById('add-movie-btn');
+    const successMsg = document.getElementById('success-msg');
+    
+    
+    const addWatchBtn = document.getElementById('add-watch-btn');
+    const success1Msg = document.getElementById('success1-msg');
+    
+    
+    addMovieBtn.addEventListener('click', () => {
+      const movieId = new URLSearchParams(window.location.search).get('id');;
+    
+      fetch('/add-movie', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ movieId })
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            // show success message and hide button
+            successMsg.style.display = 'block';
+            addMovieBtn.style.display = 'none';
+          } else {
+            alert(data.message);
+          }
+        })
+        .catch(error => console.log(error));
+    });
+    
+    
+    addWatchBtn.addEventListener('click', () => {
+      const movieId = new URLSearchParams(window.location.search).get('id');;
+    
+      fetch('/add-watchlist', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ movieId })
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            // show success message and hide button
+            successMsg.style.display = 'block';
+            addWatchBtn.style.display = 'none';
+          } else {
+            alert(data.message);
+          }
+        })
+        .catch(error => console.log(error));
+    });
+    
+    
+    
+    
+      </script>
+</html>

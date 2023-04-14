@@ -3,202 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie Details</title>
-    
+    <title>TV Show Details</title>
+        
     
     <style>
-        body {
-            font-family: sans-serif;
-            background-image: url("/abc.jpg");
-			background-size: cover;
-			background-position: center;
-        }
-        h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-        img {
-            width: 300px;
-            height: 450px;
-            object-fit: cover;
-        }
-        p {
-            margin-bottom: 5px;
-        }
+      body {
+          font-family: sans-serif;
+          background-image: url("/abc.jpg");
+    background-size: cover;
+    background-position: center;
+      }
+      h1 {
+          font-size: 28px;
+          margin-bottom: 10px;
+      }
+      img {
+          width: 300px;
+          height: 450px;
+          object-fit: cover;
+      }
+      p {
+          margin-bottom: 5px;
+      }
 
-        #cast {
-       display: flex;
-       flex-wrap: wrap;
-       justify-content: flex-start;
-       align-items: center;
-       }
+      #cast {
+     display: flex;
+     flex-wrap: wrap;
+     justify-content: flex-start;
+     align-items: center;
+     }
 
 #cast img {
-  width: 100px;
-  height: 150px;
-  margin: 5px;
+width: 100px;
+height: 150px;
+margin: 5px;
 }
 
-    </style>
+  </style>
 </head>
 <body>
     <header>
-        <h1>Movie Details</h1>
+        <h1>TV Show Details</h1>
     </header>
     <main>
         <a href="/search">Back</a>
         <div>
-            <img id="poster" src="" alt="Movie Poster">
+            <img id="poster" src="" alt="TV Show Poster">
         </div>
         <div>
             <h2 id="title"></h2>
             <p id="release_year"></p>
             <p id="genres"></p>
-            <p id="director"></p>
+            <p id="creator"></p>
+            <p id="network"></p>
             <p id="rating"></p>
             <p id="description"></p>
             <div id="cast">
-
             </div>
-            
         </div>
-            <form id="add-movie-btn" action="/add-movie" method="POST">
-                <input type="hidden" name="movieId" value="">
-                <button type="submit">Add to My Library</button>
-            </form>
-
-            <form id="add-watch-btn" action="/add-watchlist" method="POST">
-              <input type="hidden" name="movieId" value="">
-              <button type="submit">Add to My Watchlist</button>
-          </form>
-
-            
-            <% if (typeof error !== 'undefined' && error !== null && error.length > 0) { %>
-                <p><%= error %></p>
-              <% } %>
-              
-        
-          
-    
     </main>
+
     <script>
-const apiKey = 'cb271ca40b23866a540695b98e939277';
-const IMGPATH = "https://image.tmdb.org/t/p/w1280";
-const movieId = new URLSearchParams(window.location.search).get('id');
-
-document.querySelector('#add-movie-btn input[name="movieId"]').value = movieId;
-document.querySelector('#add-watch-btn input[name="movieId"]').value = movieId;
-
-const addMovieBtn = document.getElementById('add-movie-btn');
-const successMsg = document.getElementById('success-msg');
-
-
-const addWatchBtn = document.getElementById('add-watch-btn');
-const success1Msg = document.getElementById('success1-msg');
-
-addMovieBtn.addEventListener('click', () => {
-  const movieId = new URLSearchParams(window.location.search).get('id');;
-
-  fetch('/add-movie', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ movieId })
-  })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        // show success message and hide button
-        successMsg.style.display = 'block';
-        addMovieBtn.style.display = 'none';
-      } else {
-        alert(data.message);
-      }
-    })
-    .catch(error => console.log(error));
-});
-
-
-addWatchBtn.addEventListener('click', () => {
-  const movieId = new URLSearchParams(window.location.search).get('id');;
-
-  fetch('/add-watchlist', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ movieId })
-  })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        // show success message and hide button
-        successMsg.style.display = 'block';
-        addWatchBtn.style.display = 'none';
-      } else {
-        alert(data.message);
-      }
-    })
-    .catch(error => console.log(error));
-});
-
-
-
-const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`;
-
-fetch(url)
-    .then(res => res.json())
-    .then(data => {
-        console.log(data);
-        document.getElementById('poster').src = IMGPATH + data.poster_path;
-        document.getElementById('title').textContent = data.title;
-        document.getElementById('release_year').textContent = `Release Year: ${data.release_date.slice(0, 4)}`;
-        document.getElementById('description').textContent = data.overview;
-        document.getElementById('rating').textContent = `Rating: ${data.vote_average}`;
-
-        const genres = data.genres.map(genre => genre.name).join(', ');
-        document.getElementById('genres').textContent = `Genres: ${genres}`;
-
-        fetch(`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${apiKey}&language=en-US`)
+        const apiKey = 'cb271ca40b23866a540695b98e939277';
+        const IMGPATH = "https://image.tmdb.org/t/p/w1280";
+        const tvId = new URLSearchParams(window.location.search).get('id');
+        
+        const url = `https://api.themoviedb.org/3/tv/${tvId}?api_key=${apiKey}&language=en-US`;
+        
+        fetch(url)
             .then(res => res.json())
-            .then(credits => {
-                console.log(credits);
-                const director = credits.crew.find(person => person.job === 'Director');
-                document.getElementById('director').textContent = `Director: ${director.name}`;
-
-                const cast = credits.cast.slice(0, 5).map(person => person.name).join(', ');
-                //document.getElementById('cast').textContent = `Cast: ${cast}`;
+            .then(data => {
+                console.log(data);
+                document.getElementById('poster').src = IMGPATH + data.poster_path;
+                document.getElementById('title').textContent = data.name;
+                document.getElementById('release_year').textContent = `First Air Date: ${data.first_air_date.slice(0, 4)}`;
+                document.getElementById('description').textContent = data.overview;
+                document.getElementById('rating').textContent = `Rating: ${data.vote_average}`;
+        
+                const genres = data.genres.map(genre => genre.name).join(', ');
+                document.getElementById('genres').textContent = `Genres: ${genres}`;
+                document.getElementById('creator').textContent = `Creator: ${data.created_by[0].name}`;
+                document.getElementById('network').textContent = `Network: ${data.networks[0].name}`;
+        
+                fetch(`https://api.themoviedb.org/3/tv/${tvId}/credits?api_key=${apiKey}&language=en-US`)
+                    .then(res => res.json())
+                    .then(credits => {
+                        console.log(credits);
+                        const cast = credits.cast.slice(0, 5);
+                        const castContainer = document.getElementById('cast');
+                        cast.forEach(person => {
+                            const personElement = document.createElement('div');
+                            const personImage = document.createElement('img');
+                            const personName = document.createElement('p');
+                            personImage.src = IMGPATH + person.profile_path;
+                            personImage.alt = `${person.name} image`;
+                            personName.textContent = person.name;
+                            personElement.appendChild(personImage);
+                            personElement.appendChild(personName);
+                            castContainer.appendChild(personElement);
+                        });
+                    })
+                    .catch(error => console.log(error));
             })
             .catch(error => console.log(error));
-
-
-    fetch(`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${apiKey}&language=en-US`)
-  .then(res => res.json())
-  .then(credits => {
-    console.log(credits);
-    const cast = credits.cast.slice(0, 5);
-    const castContainer = document.getElementById('cast');
-    cast.forEach(person => {
-      const personElement = document.createElement('div');
-      const personImage = document.createElement('img');
-      const personName = document.createElement('p');
-      personImage.src = IMGPATH + person.profile_path;
-      personImage.alt = `${person.name} image`;
-      personName.textContent = person.name;
-      personElement.appendChild(personImage);
-      personElement.appendChild(personName);
-      castContainer.appendChild(personElement);
-    });
-  })
-  .catch(error => console.log(error));
-   
-    })
-    .catch(error => console.log(error));
-    
     </script>
-    
-  
-      
 </body>
 </html>

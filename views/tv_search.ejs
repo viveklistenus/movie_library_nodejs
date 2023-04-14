@@ -72,11 +72,14 @@ h2{
   <main id="main"></main>
   <script>
    // API information.
-const apiUrl =
+   const apiUrl =
   "https://api.themoviedb.org/3/discover/tv?sort_by=popularity.desc&api_key=cb271ca40b23866a540695b98e939277&page=1";
-const IMGPATH = "https://image.tmdb.org/t/p/w1280";
-const SEARCHAPI =
+
+  const IMGPATH = "https://image.tmdb.org/t/p/w1280";
+
+  const SEARCHAPI =
   "https://api.themoviedb.org/3/search/tv?&api_key=cb271ca40b23866a540695b98e939277&query=";
+
 // Selecting our Elements.
 const main = document.getElementById("main");
 const form = document.getElementById("form");
@@ -98,11 +101,13 @@ function showMovies(url) {
         const link = document.createElement("a");
         const add = document.createElement("button");
 
-        link.href = `/mov?id=${element.id}`;
+        link.href = `/tv-details?id=${element.id}`;
+
         link.appendChild(text);
         el.appendChild(link);
         image.src = IMGPATH + element.poster_path;
-        text.innerHTML = `${element.title}`;
+        text.innerHTML = `${element.name}`;
+
         el.appendChild(image);
         main.appendChild(el);
       });

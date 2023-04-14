@@ -59,18 +59,7 @@
             <p id="description"></p>
             <div id="cast">
 
-            </div>
             
-        </div>
-            <form id="add-movie-btn" action="/add-movie" method="POST">
-                <input type="hidden" name="movieId" value="">
-                <button type="submit">Add to My Library</button>
-            </form>
-
-            <form id="add-watch-btn" action="/add-watchlist" method="POST">
-              <input type="hidden" name="movieId" value="">
-              <button type="submit">Add to My Watchlist</button>
-          </form>
 
             
             <% if (typeof error !== 'undefined' && error !== null && error.length > 0) { %>
@@ -81,67 +70,17 @@
           
     
     </main>
-    <script>
+<script>
+
+
+
+
+
+
 const apiKey = 'cb271ca40b23866a540695b98e939277';
 const IMGPATH = "https://image.tmdb.org/t/p/w1280";
 const movieId = new URLSearchParams(window.location.search).get('id');
 
-document.querySelector('#add-movie-btn input[name="movieId"]').value = movieId;
-document.querySelector('#add-watch-btn input[name="movieId"]').value = movieId;
-
-const addMovieBtn = document.getElementById('add-movie-btn');
-const successMsg = document.getElementById('success-msg');
-
-
-const addWatchBtn = document.getElementById('add-watch-btn');
-const success1Msg = document.getElementById('success1-msg');
-
-addMovieBtn.addEventListener('click', () => {
-  const movieId = new URLSearchParams(window.location.search).get('id');;
-
-  fetch('/add-movie', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ movieId })
-  })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        // show success message and hide button
-        successMsg.style.display = 'block';
-        addMovieBtn.style.display = 'none';
-      } else {
-        alert(data.message);
-      }
-    })
-    .catch(error => console.log(error));
-});
-
-
-addWatchBtn.addEventListener('click', () => {
-  const movieId = new URLSearchParams(window.location.search).get('id');;
-
-  fetch('/add-watchlist', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ movieId })
-  })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        // show success message and hide button
-        successMsg.style.display = 'block';
-        addWatchBtn.style.display = 'none';
-      } else {
-        alert(data.message);
-      }
-    })
-    .catch(error => console.log(error));
-});
 
 
 
@@ -196,9 +135,7 @@ fetch(url)
     })
     .catch(error => console.log(error));
     
-    </script>
-    
-  
-      
+</script>
+
 </body>
 </html>

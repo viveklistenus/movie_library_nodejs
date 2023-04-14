@@ -45,6 +45,7 @@ app.get('/movie-of-the-day', async (req, res) => {
 app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 app.use(session({
     secret: 'secret',
@@ -204,30 +205,203 @@ app.post('/movie-details', async (req, res) => {
     }
   });
  
-  app.get('/movie-details', async (req, res) => {
+  app.get('/movie-details1', (req, res) => {
+    const movieId = req.query.id;
+    const apiKey = "cb271ca40b23866a540695b98e939277";
+  
+    // retrieve movie details, poster, credits, and reviews from external API
+    const movieDetailsUrl = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`;
+    const moviePosterUrl = `https://api.themoviedb.org/3/movie/${movieId}/images?api_key=${apiKey}`;
+    const movieCreditsUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${apiKey}`;
+    
+    Promise.all([fetch(movieDetailsUrl), fetch(moviePosterUrl), fetch(movieCreditsUrl)])
+      .then(([detailsResponse, posterResponse, creditsResponse]) => Promise.all([detailsResponse.json(), posterResponse.json(), creditsResponse.json()]))
+      .then(([movieDetails, posterDetails, credits]) => {
+        // retrieve reviews for this movie from MySQL
+        const reviewsQuery = `SELECT review,username FROM review_data where movie_id = ? `;
+        connection.query(reviewsQuery, [movieId], (error, reviewsResults) => {
+          if (error) {
+            console.error(error);
+            res.send("Nothing found");
+            return;
+          }
+
+          
+         
+  
+          // pass movie details, poster, credits, and reviews to template for rendering
+          res.render('movie-details1', {
+            movieId: movieId,
+            title: movieDetails.title,
+            release_year: new Date(movieDetails.release_date).getFullYear(),
+            genres: movieDetails.genres.map(genre => genre.name).join(', '),
+            director: credits.crew.find(person => person.job === 'Director').name,
+            rating: movieDetails.vote_average,
+            description: movieDetails.overview,
+            cast: credits.cast.slice(0, 5),
+            reviews: reviewsResults,
+            poster: `https://image.tmdb.org/t/p/original${movieDetails.poster_path}` // use the first poster returned by the API
+          });
+        });
+      })
+      .catch(error => {
+        console.error(error);
+        res.render('error', { message: 'An error occurred while retrieving movie details.' });
+      });
+      
+  });
+  
+  
+  
+  app.post('/add-review', (req, res) => {
+  const user = req.session.username;
+    
+  const movieId = req.body.movieId;
+  console.log(movieId)
+  const review = req.body.review;
+
+
+    if (!movieId || !review) {
+      res.status(400).json({ success: false, message: 'Missing required fields' });
+      return;
+    }
+  
+    const query = `INSERT INTO review_data (movie_id, review, username ) VALUES (${movieId}, '${review}',' ${user}')`;
+  
+    connection.query(query, (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: 'Error adding review' });
+      } else {
+        res.status(200).json({ success: true, message: 'Review added successfully' });
+      }
+    });
+  });
+  
+
+  app.post('/add-discussion', (req, res) => {
     if (!req.session.loggedin) {
       return res.redirect('/');
     }
+    const movie_id = req.body.movieId;
+
+    const username = req.session.username;
+    const { discussion_text } = req.body;
+    
   
-    const API_KEY = 'cb271ca40b23866a540695b98e939277';
-    const BASE_URL = 'https://api.themoviedb.org/3';
+    // insert discussion data into database
+    const sql = `INSERT INTO discussions (movie_id, parent_username, title) VALUES (?, ?, ?)`;
+    const values = [movie_id, username, discussion_text];
   
-    const { movieId } = req.query;
+    connection.query(sql, values, (err, result) => {
+      if (err) throw err;
   
-    try {
-      const response = await axios.get(`${BASE_URL}/movie/${movieId}`, {
-        params: {
-          api_key: API_KEY
+      console.log(`Discussion added for movie_id ${movie_id} by ${username}`);
+      //res.render('discussions');
+      res.redirect('/discussions')
+    
+    });
+  });
+
+  app.get('/discussions', function(req, res) {
+    if (!req.session.loggedin) {
+      return res.redirect('/');
+    }
+    connection.query('SELECT d.id, d.movie_id, d.parent_username, d.title, d.date_created, dt.username, dt.discussion_text FROM discussions d LEFT JOIN discussions_threads dt ON d.id = dt.discussion_id', function(error, results) {
+      if (error) throw error;
+  
+      // Create an empty array to store the discussion data
+      const discussions = [];
+  
+      // Iterate over the results array and create a new object for each discussion
+      results.forEach(function(result) {
+        // Check if the discussion already exists in the discussions array
+        const existingDiscussion = discussions.find(function(discussion) {
+          return discussion.id === result.id;
+        });
+  
+        // If the discussion doesn't exist in the array, create a new object for it
+        if (!existingDiscussion) {
+          const discussionData = {
+            id: result.id,
+            movie_id: result.movie_id,
+            parent_username: result.parent_username,
+            title: result.title,
+            date_created: result.date_created,
+            threads: []
+          };
+          discussions.push(discussionData);
+        }
+  
+        // Add the discussion thread to the existing discussion object
+        if (result.username && result.discussion_text) {
+          const threadData = {
+            username: result.username,
+            discussion_text: result.discussion_text,
+            date_created: result.date_created
+          };
+  
+          // Check if existingDiscussion is defined before pushing the threadData object into its threads array
+          if (existingDiscussion && existingDiscussion.threads) {
+            existingDiscussion.threads.push(threadData);
+          }
         }
       });
-      const movieDetails = response.data;
-      res.render('movie-details', { movieDetails, movieId });
-    } catch (error) {
-      console.error(error);
-      res.status(500).send(error.message);
-    }
+  
+      // Create an empty array to store the movie data
+      const movies = [];
+  
+      // Iterate over the discussions array and make an API request for each movie_id
+      discussions.forEach(function(discussion) {
+        const movieId = discussion.movie_id;
+        const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=cb271ca40b23866a540695b98e939277`;
+        axios.get(url)
+          .then(function(response) {
+            const movieData = {
+              id: movieId,
+              title: response.data.title,
+              poster: `https://image.tmdb.org/t/p/w500/${response.data.poster_path}`
+            };
+            movies.push(movieData);
+            if (movies.length === discussions.length) {
+  
+              //Render the discussion.ejs template with the discussions, movies and threads data
+              res.render('discussion', { discussions: discussions, movies: movies });
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      });
+  
+    });
   });
   
+
+  app.post('/discussions/threads/new', function(req, res) {
+    if (!req.session.loggedin) {
+      return res.redirect('/');
+    }
+    const discussionId = req.body.discussion_id;
+    const username = req.session.username;
+    const discussionText = req.body.discussion_text;
+    const dateCreated = new Date();
+    
+    const sql = 'INSERT INTO discussions_threads (discussion_id, username, discussion_text, datee) VALUES (?, ?, ?, ?)';
+    connection.query(sql, [discussionId, username, discussionText, dateCreated], function(error, results) {
+      if (error) throw error;
+      
+      res.redirect('/discussions');
+    });
+  });
+  
+  
+
+
+
+
+
+
   app.get('/library', (req, res) => {
     if (req.session.loggedin) {
       const username = req.session.username;
@@ -364,7 +538,8 @@ app.post('/user/update', (req, res) => {
   
               Promise.all(fetchPromises)
                 .then(movies => {
-                  res.render('library', { movies, message: `Movie already exists in your library. Here's your library.`, error: true });
+                  res.render('library', { movies, message: `Already Movie could not be added to your library.`, error: true });
+
                 })
                 .catch(err => {
                   console.error(err);
@@ -411,6 +586,11 @@ app.post('/user/update', (req, res) => {
       return res.send('Please login to view this page! <a href="/">Login here</a>');
     }
   });
+
+
+  app.get('/tv-details', function(req, res) {
+    res.render('tv-details.ejs');
+});
 
   app.post('/remove-movie', (req, res) => {
     if (req.session.loggedin) {
