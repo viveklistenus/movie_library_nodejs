@@ -5,13 +5,13 @@ This is a movie library management system built on Node.js and a MySQL database,
 
 Features:
 
-User authentication and registration
-User profile management
-Search and browse movies
-Add movies to personal library
-Create and view movie reviews
-Add movies to watchlist
-Create and participate in movie discussions
+* User authentication and registration
+* User profile management
+* Search and browse movies
+* Add movies to personal library
+* Create and view movie reviews
+* Add movies to watchlist
+* Create and participate in movie discussions
 
 
 Technologies used:
@@ -22,6 +22,7 @@ Express.js framework
 bcrypt for password encryption
 TMDB API for movie data
 Bootstrap for front-end styling
+
 To use the app, clone this repository and install the dependencies using npm install. Then, create a .env file with the following environment variables:
 
 DB_HOST: host name for MySQL database
