@@ -24,21 +24,36 @@ TMDB API for movie data
 Bootstrap for front-end styling
 
 # Screenshot
-* Login Page
+# Login Page
+
 ![login](https://github.com/viveklistenus/movie_library_nodejs/assets/28853520/e29d7c8f-9537-43ec-971a-02cc33820364)
-* Singup Page
+
+# Singup Page
+
 ![signup](https://github.com/viveklistenus/movie_library_nodejs/assets/28853520/5261ee52-66e9-420d-914e-97c01ff1bdd0)
+
 * Search Movies
+
 ![search](https://github.com/viveklistenus/movie_library_nodejs/assets/28853520/893f3dfb-0214-404a-89d0-26b9ed0c4101)
+
 * Movie of the Day
+
 ![motd](https://github.com/viveklistenus/movie_library_nodejs/assets/28853520/0541e73a-c44b-421e-a393-1782cef2c036)
+
 * Movie Page
+
 ![details ejs](https://github.com/viveklistenus/movie_library_nodejs/assets/28853520/bfd0b4e5-8c98-486d-89e5-f86a5c81fa4f)
+
 * Library
+
 ![library](https://github.com/viveklistenus/movie_library_nodejs/assets/28853520/113b93b9-3635-452b-9cfd-d0c4ceabffdd)
+
 * Discussion
+
 ![discussion](https://github.com/viveklistenus/movie_library_nodejs/assets/28853520/6e5b2429-5c49-41e6-b416-520122f5a956)
+
 * Edit User Profile
+
 ![user](https://github.com/viveklistenus/movie_library_nodejs/assets/28853520/a38f30de-df14-4bdc-bfb5-6eedd985a687)
 
 
