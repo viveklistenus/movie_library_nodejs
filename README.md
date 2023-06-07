@@ -24,11 +24,11 @@ TMDB API for movie data
 Bootstrap for front-end styling
 
 # Screenshot
-# Login Page
+* Login Page
 
 ![login](https://github.com/viveklistenus/movie_library_nodejs/assets/28853520/e29d7c8f-9537-43ec-971a-02cc33820364)
 
-# Singup Page
+* Singup Page
 
 ![signup](https://github.com/viveklistenus/movie_library_nodejs/assets/28853520/5261ee52-66e9-420d-914e-97c01ff1bdd0)
 
