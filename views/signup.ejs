@@ -2,80 +2,137 @@
 <html>
 <head>
 	<title>Signup Page</title>
+	<style>
+		body {
+			background-image: url("/abc.jpg");
+			background-size: cover;
+			background-position: center;
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+		}
+
+		h1 {
+			text-align: center;
+			color: #333;
+		}
+
+		.container {
+			width: 300px;
+			margin: 0 auto;
+			margin-top: 100px;
+			background-color: #fff;
+			border-radius: 5px;
+			padding: 20px;
+		}
+
+		form label {
+			display: block;
+			margin-bottom: 5px;
+		}
+
+		form input[type="text"],
+		form input[type="password"],
+		form input[type="email"],
+		form input[type="number"],
+		form select {
+			width: 100%;
+			padding: 8px;
+			margin-bottom: 10px;
+			border-radius: 4px;
+			border: 1px solid #ccc;
+		}
+
+		form input[type="submit"] {
+			width: 100%;
+			padding: 10px;
+			border-radius: 4px;
+			background-color: #4CAF50;
+			border: none;
+			color: #fff;
+			font-weight: bold;
+			cursor: pointer;
+		}
+
+		p {
+			text-align: center;
+			margin-top: 10px;
+		}
+
+		p a {
+			color: #4CAF50;
+			text-decoration: none;
+		}
+	</style>
 </head>
 <body>
-	<h1>Signup</h1>
-	<form method="POST" action="/register">
-		<label>Username:</label>
-		<input type="text" name="username"><br>
-		<label>Name:</label>
-		<input type="text" name="name"><br>
+	<div class="container">
+		<h1>Signup</h1>
+		<form method="POST" action="/register">
+			<label>Username:</label>
+			<input type="text" name="username">
+			
+			<label>Name:</label>
+			<input type="text" name="name">
+			
+			<label>Age:</label>
+			<input type="number" name="age">
+			
+			<label>Email:</label>
+			<input type="email" name="email">
+			
+			<label for="genre">Tell us your favourite genre:</label>
+			<select name="genre" id="fgenre">
+				<option name="Horror">Horror</option>
+				<option name="Comedy">Comedy</option>
+				<option name="Drama">Drama</option>
+				<option name="Action">Action</option>
+			</select>
+			
+			<label for="country">Country:</label>
+			<input type="text" id="country-input" name="country-input" autocomplete="off" oninput="filterCountries()" placeholder="Type to search...">
+			<select name="country" id="country-select" onchange="setCountry()">
+				<% const countries = ['India', 'United States', 'China', 'Brazil', 'Russia', 'Japan', 'Mexico', 'Philippines', 'Vietnam', 'Ethiopia', 'Egypt', 'Germany', 'Iran', 'Turkey', 'Democratic Republic of the Congo', 'Thailand', 'France', 'United Kingdom', 'Italy', 'Tanzania']; %>
+				<% for (const country of countries) { %>
+				<option value="<%= country %>"><%= country %></option>
+				<% } %>
+			</select>
+			
+			<label>Password:</label>
+			<input type="password" name="password">
+			
+			<label>Confirm Password:</label>
+			<input type="password" name="cpass">
+			
+			<input type="submit" value="Signup">
+		</form>
+		<p>Already have an account? <a href="/">Login</a></p>
+	</div>
+
+	<script>
+		const countrySelect = document.getElementById('country-select');
+		const countryInput = document.getElementById('country-input');
+		const countries = ['India', 'United States', 'China', 'Brazil', 'Russia', 'Japan', 'Mexico', 'Philippines', 'Vietnam', 'Ethiopia', 'Egypt', 'Germany', 'Iran', 'Turkey', 'Democratic Republic of the Congo', 'Thailand', 'France', 'United Kingdom', 'Italy', 'Tanzania'];
 		
+		function filterCountries() {
+			const filter = countryInput.value.toUpperCase();
+			const filteredCountries = countries.filter(country => country.toUpperCase().includes(filter));
+			updateOptions(filteredCountries);
+		}
 		
+		function updateOptions(filteredCountries) {
+			countrySelect.innerHTML = '';
+			for (const country of filteredCountries) {
+				const option = document.createElement('option');
+				option.value = country;
+				option.text = country;
+				countrySelect.add(option);
+			}
+		}
 		
-		<label>Age:</label>
-		<input type="number" name="age"><br>
-		<label>email:</label>
-		<input type="email" name="email"><br>
-		
-		
-		<label for="genre">Tell us your favourite genre:</label>
-
-        <select name="genre" id="fgenre">
-          	<option name="Horror">Horror</option>
-  			<option name="Comedy">Comedy</option>
-  			<option name="Drama">Drama</option>
-  			<option ="Action">Action</option>
-		</select>
-
-		<br>
-
-		
-<label for="country">Country:</label>
-<input type="text" id="country-input" name="country-input" autocomplete="off" oninput="filterCountries()" placeholder="Type to search...">
-<select name="country" id="country-select" onchange="setCountry()">
-  <% const countries = ['India', 'United States', 'China', 'Brazil', 'Russia', 'Japan', 'Mexico', 'Philippines', 'Vietnam', 'Ethiopia', 'Egypt', 'Germany', 'Iran', 'Turkey', 'Democratic Republic of the Congo', 'Thailand', 'France', 'United Kingdom', 'Italy', 'Tanzania']; %>
-  <% for (const country of countries) { %>
-    <option value="<%= country %>"><%= country %></option>
-  <% } %>
-</select>
-<br>
-
-		<label>Password:</label>
-		<input type="password" name="password"><br>
-		  <br>
-		<label>Confirm Password:</label>
-		<input type="password" name="cpass"><br>
-
-
-		<input type="submit" value="Signup">
-	</form>
-	<p>Already have an account? <a href="/">Login</a></p>
-
-  <script>
-    const countrySelect = document.getElementById('country-select');
-    const countryInput = document.getElementById('country-input');
-    const countries = ['India', 'United States', 'China', 'Brazil', 'Russia', 'Japan', 'Mexico', 'Philippines', 'Vietnam', 'Ethiopia', 'Egypt', 'Germany', 'Iran', 'Turkey', 'Democratic Republic of the Congo', 'Thailand', 'France', 'United Kingdom', 'Italy', 'Tanzania'];
-    
-    function filterCountries() {
-      const filter = countryInput.value.toUpperCase();
-      const filteredCountries = countries.filter(country => country.toUpperCase().includes(filter));
-      updateOptions(filteredCountries);
-    }
-    
-    function updateOptions(filteredCountries) {
-      countrySelect.innerHTML = '';
-      for (const country of filteredCountries) {
-        const option = document.createElement('option');
-        option.value = country;
-        option.text = country;
-        countrySelect.add(option);
-      }
-    }
-    
-    function setCountry() {
-      countryInput.value = countrySelect.value;
-    }
-  </script>
+		function setCountry() {
+			countryInput.value = countrySelect.value;
+		}
+	</script>
 </body>
 </html>

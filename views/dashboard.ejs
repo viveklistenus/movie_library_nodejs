@@ -1,39 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dashboard</title>
+	<style>
+		body {
+			background-color: #f1f1f1;
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+		}
 
-<h1>Welcome, <%= username %>!</h1> 
-<br>
-<br>
-<a href="/logout">Logout</a>
-<br>
-<br>
-<a href="/search">Search Movie</a>
-<br>
-<br>
-<a href="/movie-of-the-day">Movie of the day!</a>
-<br>
-<br>
-<a href="/user">User Profile</a>
-<br>
-<br>
-<a href="/library">Library</a>
-<br>
-<br>
-<a href="/watchlist">Watchlist</a>
-<br>
-<br>
-<a href="/tv_search">Search TV</a>
-<br>
-<br>
-<a href="/discussions">Discussion</a>
+		.container {
+			
+			width: 400px;
+			margin: 50px auto;
+			background-color: #fff;
+			border-radius: 5px;
+			padding: 20px;
+			box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+		}
 
+		h1 {
+			text-align: center;
+			color: #333;
+		}
 
-<% if (movieDetails) { %>
-  <h2>Movie Details:</h2>
-  <p>Title: <%= movieDetails.title %></p>
-  <p>Release Date: <%= movieDetails.release_date %></p>
-  <p>Overview: <%= movieDetails.overview %></p>
-  <% if (movieDetails.poster_path) { %>
-    <img src="https://image.tmdb.org/t/p/w500<%= movieDetails.poster_path %>" alt="<%= movieDetails.title %> poster" width="250" height="320">
-  <% } %>
-<% } %>
+		h2 {
+			margin-top: 20px;
+			margin-bottom: 10px;
+		}
 
+		p {
+			margin-bottom: 10px;
+		}
 
+		.link-container {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+			margin-bottom: 10px;
+			padding: 10px;
+			background-color: #f9f9f9;
+			border-radius: 4px;
+			text-decoration: none;
+			color: #333;
+			box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+		}
+
+		.link-image {
+			margin-bottom: 10px;
+			width: 50%;
+			
+		}
+
+		img {
+			display: block;
+			margin: 20px auto;
+		}
+		a{
+			text-decoration: none;
+			color: black;
+		}
+	</style>
+</head>
+<body>
+	
+	<div class="container">
+		<h1>Welcome, <%= username %>!</h1>
+		<br>
+		<br>
+		<div class="link-container">
+			<a href="/logout">Logout</a>
+		</div>
+		
+		<br>
+		<br>
+		<div class="link-container">
+			<img class="link-image" src="/search.png" alt="Search Movie">
+			<a href="/search">Search Movie</a>
+		</div>
+		<br>
+		<br>
+		<div class="link-container">
+			<img class="link-image" src="/motd.png" alt="Movie of the Day">
+			<a href="/movie-of-the-day">Movie of the day!</a>
+		</div>
+		<br>
+		<br>
+		<div class="link-container">
+			<img class="link-image" src="/user.png" alt="User Profile">
+			<a href="/user">User Profile</a>
+		</div>
+		<br>
+		<br>
+		<div class="link-container">
+			<img class="link-image" src="/library.png" alt="Library">
+			<a href="/library">Library</a>
+		</div>
+		<br>
+		<br>
+		<div class="link-container">
+			<img class="link-image" src="/watchlist.png" alt="Watchlist">
+			<a href="/watchlist">Watchlist</a>
+		</div>
+		<br>
+		<br>
+		<div class="link-container">
+			<img class="link-image" src="/discus.png" alt="Discussion">
+			<a href="/discussions">Discussion</a>
+		</div>
+
+		<% if (movieDetails) { %>
+			<h2>Movie Details:</h2>
+			<p>Title: <%= movieDetails.title %></p>
+			<p>Release Date: <%= movieDetails.release_date %></p>
+			<p>Overview: <%= movieDetails.overview %></p>
+			<% if (movieDetails.poster_path) { %>
+				<img src="https://image.tmdb.org/t/p/w500<%= movieDetails.poster_path %>" alt="<%= movieDetails.title %> poster" width="250" height="320">
+			<% } %>
+		<% } %>
+	</div>
+</body>
+</html>

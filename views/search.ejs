@@ -12,56 +12,122 @@
   </script>
   <script src="app.js" defer></script>
   <style>
-     
-    @font-face{
-            font-family:myHeadingFont;
-            src: url(AlfaSlabOne-Regular.ttf);
-            }
+    @font-face {
+      font-family: myHeadingFont;
+      src: url(AlfaSlabOne-Regular.ttf);
+    }
         
-main{
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    main {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    main div {
+      width: 250px;
+      height: 320px;
+      margin: 19px 15px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+
+    img {
+      width: 100%;
+      height: 89%;
+      object-fit: cover;
+      border-radius: 8px 8px 0 0;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    h2 {
+      font-size: 15px;
+      font-family: sans-serif;
+      font-weight: bold;
+      text-align: center;
+      color: #fff;
+      margin: 0;
+      padding: 8px;
+      background-color: rgba(0, 0, 0, 0.7);
+      border-radius: 0 0 8px 8px;
+    }
+
+    #head {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: myHeadingFont;
+      margin-bottom: 20px;
+    }
+
+    .search {
+      width: 300px;
+      padding: 10px;
+      border: none;
+      border-radius: 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      margin-top: 10px;
+    }
+
+    header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    a {
+      text-decoration: none;
+      color: #333;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    a#b_btn,
+a#l_btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  margin-bottom: 10px;
 }
-main div{
-    width: 250px;
-    height: 320px;
-    margin: 19px 15px;
-    background: red;
+
+a#b_btn:hover,
+a#l_btn:hover {
+  background-color: #555;
 }
-img{
-    width: 100%;
-    height: 89%;
-    object-fit: cover;
+
+div#search{
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
-h2{
-    font-size: 15px;
-    font-family: sans-serif;
-    font-weight: bold;
-    text-align: center;
-    color: #fff;
-    
-}
-#head{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family:myHeadingFont;
-            
-}
- 
+
 
   </style>
 </head>
 <body>
-  <a href="/dashboard">Back</a>
+  <a id="b_btn" href="/dashboard">Back</a>
+  <br>
+  <a id="l_btn" href="/logout">Logout</a>
 
   <!-- The header that contains the title and the Search bar -->
   <header>
-    <a href="/logout">Logout</a>
+    
     <div id="head">
-      <div>SEARCH MOVIES:</div>
+      <div style="font-weight: bold; font-size: 24px; color: black; ">SEARCH</div>
+
       <br>
       <form id="form">
         <input type="text" id="search" class="search"/>

@@ -3,7 +3,7 @@ import session from 'express-session';
 import mysql from 'mysql2';
 import bodyParser from 'body-parser';
 import axios from 'axios';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import fetch from 'node-fetch';
 import NodeCache from 'node-cache';
 
@@ -213,7 +213,7 @@ app.post('/movie-details', async (req, res) => {
     const movieDetailsUrl = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`;
     const moviePosterUrl = `https://api.themoviedb.org/3/movie/${movieId}/images?api_key=${apiKey}`;
     const movieCreditsUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${apiKey}`;
-    
+  
     Promise.all([fetch(movieDetailsUrl), fetch(moviePosterUrl), fetch(movieCreditsUrl)])
       .then(([detailsResponse, posterResponse, creditsResponse]) => Promise.all([detailsResponse.json(), posterResponse.json(), creditsResponse.json()]))
       .then(([movieDetails, posterDetails, credits]) => {
@@ -225,30 +225,39 @@ app.post('/movie-details', async (req, res) => {
             res.send("Nothing found");
             return;
           }
-
-          
-         
   
-          // pass movie details, poster, credits, and reviews to template for rendering
-          res.render('movie-details1', {
-            movieId: movieId,
-            title: movieDetails.title,
-            release_year: new Date(movieDetails.release_date).getFullYear(),
-            genres: movieDetails.genres.map(genre => genre.name).join(', '),
-            director: credits.crew.find(person => person.job === 'Director').name,
-            rating: movieDetails.vote_average,
-            description: movieDetails.overview,
-            cast: credits.cast.slice(0, 5),
-            reviews: reviewsResults,
-            poster: `https://image.tmdb.org/t/p/original${movieDetails.poster_path}` // use the first poster returned by the API
-          });
+          // fetch images of the cast
+          const castIds = credits.cast.slice(0, 5).map(cast => cast.id);
+          const castImageUrl = `https://api.themoviedb.org/3/person/${castIds.join()}?api_key=${apiKey}&language=en-US&append_to_response=images`;
+  
+          fetch(castImageUrl)
+            .then(response => response.json())
+            .then(castDetails => {
+              // pass movie details, poster, credits, and reviews to template for rendering
+              res.render('movie-details1', {
+                movieId: movieId,
+                title: movieDetails.title,
+                release_year: new Date(movieDetails.release_date).getFullYear(),
+                genres: movieDetails.genres.map(genre => genre.name).join(', '),
+                director: credits.crew.find(person => person.job === 'Director').name,
+                rating: movieDetails.vote_average,
+                description: movieDetails.overview,
+                cast: credits.cast.slice(0, 5),
+                castImages: castDetails.images.profiles,
+                reviews: reviewsResults,
+                poster: `https://image.tmdb.org/t/p/original${movieDetails.poster_path}` // use the first poster returned by the API
+              });
+            })
+            .catch(error => {
+              console.error(error);
+              res.render('error', { message: 'An error occurred while retrieving cast details.' });
+            });
         });
       })
       .catch(error => {
         console.error(error);
         res.render('error', { message: 'An error occurred while retrieving movie details.' });
       });
-      
   });
   
   
@@ -782,6 +791,6 @@ app.post('/add-movie', (req, res) => {
   }
   });
   
- app.listen(3000, () => {
-    console.log('Server started on port 3000');
+ app.listen(5000, () => {
+    console.log('Server started on port 5000');
   });

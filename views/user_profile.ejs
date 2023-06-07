@@ -1,33 +1,83 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>User Profile</title>
-  </head>
-  <body>
-    <a href="/dashboard">Back</a>
-    <h1>User Profile</h1>
-    <p>Welcome <%= userData.name %>!</p>
-    
-    <form method="POST" action="/user/update">
-      <label for="username">Username:</label>
-      <input type="text" id="username" name="username" value="<%= userData.username %>" readonly>
-      <br>
-      <label for="name">Name:</label>
-      <input type="text" id="name" name="name" value="<%= userData.name %>">
-      <br>
-      <label for="age">Age:</label>
-      <input type="number" id="age" name="age" value="<%= userData.age %>">
-      <br>
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" value="<%= userData.email %>">
-      <br>
-      <label for="fgenre">Favorite Genre:</label>
-      <input type="text" id="fgenre" name="fgenre" value="<%= userData.fgenre %>">
-      <br>
-      <label for="country">Country:</label>
-      <input type="text" id="country" name="country" value="<%= userData.country %>">
-      <br>
-      <button type="submit">Update Profile</button>
-    </form>
-  </body>
+<head>
+  <title>User Profile</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 20px;
+    }
+
+    a {
+      text-decoration: none;
+      color: #0071eb;
+      font-weight: bold;
+      margin-bottom: 10px;
+      display: inline-block;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    form {
+      margin-top: 20px;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="email"] {
+      width: 300px;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+
+    button[type="submit"] {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 4px;
+      background-color: #0071eb;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <a href="/dashboard">Back</a>
+  <h1>User Profile</h1>
+  <p>Welcome <%= userData.name %>!</p>
+  
+  <form method="POST" action="/user/update">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" value="<%= userData.username %>" readonly>
+    <br>
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" value="<%= userData.name %>">
+    <br>
+    <label for="age">Age:</label>
+    <input type="number" id="age" name="age" value="<%= userData.age %>">
+    <br>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" value="<%= userData.email %>">
+    <br>
+    <label for="fgenre">Favorite Genre:</label>
+    <input type="text" id="fgenre" name="fgenre" value="<%= userData.fgenre %>">
+    <br>
+    <label for="country">Country:</label>
+    <input type="text" id="country" name="country" value="<%= userData.country %>">
+    <br>
+    <button type="submit">Update Profile</button>
+  </form>
+</body>
 </html>

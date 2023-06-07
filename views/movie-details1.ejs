@@ -1,130 +1,234 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <style>
-      img {
-            width: 300px;
-            height: 450px;
-            object-fit: cover;
-        }
-    </style>
-  </head>
- 
-  <body>
-    <h1><%= title %> (<%= release_year %>)</h1>
-    <img src="<%= poster %>" alt="Movie Poster">
-    <p><strong>Genres:</strong> <%= genres %></p>
-    <p><strong>Director:</strong> <%= director %></p>
-    <p><strong>Rating:</strong> <%= rating %></p>
-    <p><strong>Description:</strong> <%= description %></p>
-    <h2>Cast</h2>
-    
-<ul>
-  <% for (let i = 0; i < Math.min(cast.length, 5); i++) { %>
-    
-    <li><%= cast[i].name %> as <%= cast[i].character %></li>
-  <% } %>
-  <% if (cast.length > 5) { %>
-    <li>and more...</li>
-  <% } %>
-</ul>
+<head>
+  <title><%= title %></title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 20px;
+    }
 
-    <h2>Reviews</h2>
-    <ul>
-      <% for (let i = 0; i < reviews.length; i++) { %>
-        <li><%= reviews[i].review %> - <%= reviews[i].username %></li>
-      <% } %>
-    </ul>
+    h1 {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
 
-    <form id="add-review-form" action="/add-review" method="POST">
-      <input type="hidden" name="movieId" value="<%= movieId %>">
-      <label for="review">Add Review:</label>
-      <textarea name="review" id="review" rows="4" cols="50"></textarea>
-      <button type="submit">Submit Review</button>
-    </form>
+    img {
+      display: block;
+      margin: 0 auto;
+      width: 90%;
+      height: auto;
+      object-fit: cover;
+      border-radius: 4px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
 
+    p {
+      margin: 5px 0;
+    }
 
-    <form method="POST" action="/add-discussion">
-      <input type="hidden" name="movieId" value="<%= movieId %>">
-      
-      <textarea name="discussion_text"></textarea>
-      <button type="submit">Start Discussion</button>
-    </form>
-  
-    
-    
+    strong {
+      font-weight: bold;
+    }
 
-    <form id="add-movie-btn" action="/add-movie" method="POST">
-        <input type="hidden" name="movieId" value="<%= movieId %>">
-        <button type="submit">Add to My Library</button>
-    </form>
+    h2 {
+      font-size: 24px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
 
-    <form id="add-watch-btn" action="/add-watchlist" method="POST">
-      <input type="hidden" name="movieId" value="<%= movieId %>">
-      <button type="submit">Add to My Watchlist</button>
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    ul li {
+      margin-bottom: 10px;
+    }
+
+    form textarea {
+      width: 100%;
+      height: 100px;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+
+    form button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 4px;
+      background-color: #0071eb;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #cast {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    #cast img {
+      width: 100px;
+      height: 150px;
+      margin: 5px;
+    }
+
+    .movie-details-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .movie-details {
+      display: flex;
+      align-items: center;
+    }
+
+    .poster-container {
+      flex: 0 0 300px;
+      margin-right: 20px;
+    }
+
+    .details-container {
+      flex: 1;
+    }
+
+    .buttons-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .buttons-container form {
+      margin-left: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="movie-details-container">
+    <div class="poster-container">
+      <img src="<%= poster %>" alt="Movie Poster">
+    </div>
+    <div class="details-container">
+      <h1><%= title %> (<%= release_year %>)</h1>
+      <p><strong>Genres:</strong> <%= genres %></p>
+      <p><strong>Director:</strong> <%= director %></p>
+      <p><strong>Rating:</strong> <%= rating %></p>
+      <p><strong>Description:</strong> <%= description %></p>
+      <br>
+      <br>
+      <div class="buttons-container">
+        <form id="add-movie-btn" action="/add-movie" method="POST">
+          <input type="hidden" name="movieId" value="<%= movieId %>">
+          <button type="submit">Add to My Library</button>
+        </form>
+        <form id="add-watch-btn" action="/add-watchlist" method="POST">
+          <input type="hidden" name="movieId" value="<%= movieId %>">
+          <button type="submit">Add to My Watchlist</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <h2>Cast</h2> 
+  <div id="cast">
+    <% for (let i = 0; i < cast.length; i++) { %>
+    <div>
+      <img src="https://image.tmdb.org/t/p/w185<%= cast[i].profile_path %>" alt="<%= cast[i].name %>">
+      <br>
+      <p><%= cast[i].name %></p>
+      <br>
+    </div>
+    <% } %>
+  </div>
+
+  <h2>Reviews</h2>
+  <ul>
+    <% for (let i = 0; i < reviews.length; i++) { %>
+    <li><%= reviews[i].review %> - <%= reviews[i].username %></li>
+    <% } %>
+  </ul>
+
+  <form id="add-review-form" action="/add-review" method="POST">
+    <input type="hidden" name="movieId" value="<%= movieId %>">
+    <label for="review">Add Review:</label>
+    <textarea name="review" id="review" rows="4" cols="50"></textarea>
+    <button type="submit">Submit Review</button>
   </form>
-  </body>
+  <br>
+
+  <form method="POST" action="/add-discussion">
+    <input type="hidden" name="movieId" value="<%= movieId %>">
+    <label>Add Discussion:</label>
+    <textarea name="discussion_text"></textarea>
+    <button type="submit">Start Discussion</button>
+  </form>
+
   <script>
+    // review code
+    const addReviewForm = document.getElementById('add-review-form');
+    const success2Msg = document.getElementById('success2-msg');
 
-//review code 
-    
-const addReviewForm = document.getElementById('add-review-form');
-const success2Msg = document.getElementById('success2-msg');
+    addReviewForm.addEventListener('submit', (event) => {
+      event.preventDefault();
 
-addReviewForm.addEventListener('submit', (event) => {
-  event.preventDefault();
+      const movieId = new URLSearchParams(window.location.search).get('id');
+      const review = document.getElementById('review').value;
 
-  const movieId = new URLSearchParams(window.location.search).get('id');
- 
-  const review = document.getElementById('review').value;
-  
-    // Send a POST request with the movieId and review data
-    fetch('/add-review', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      movieId: movieId,
-      review: review
-    })
-  })
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-    success2Msg.innerText = 'Review added successfully!';
-  })
-  .catch(error => {
-    console.error(error);
-    success2Msg.innerText = 'An error occurred while adding the review.';
-  });
+      // Send a POST request with the movieId and review data
+      fetch('/add-review', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            movieId: movieId,
+            review: review
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          success2Msg.innerText = 'Review added successfully!';
+        })
+        .catch(error => {
+          console.error(error);
+          success2Msg.innerText = 'An error occurred while adding the review.';
+        });
 
-});
-    
+    });
+
     const movieId = new URLSearchParams(window.location.search).get('id');
     document.querySelector('#add-movie-btn input[name="movieId"]').value = movieId;
     document.querySelector('#add-watch-btn input[name="movieId"]').value = movieId;
-    
-        
+
     const addMovieBtn = document.getElementById('add-movie-btn');
     const successMsg = document.getElementById('success-msg');
-    
-    
+
     const addWatchBtn = document.getElementById('add-watch-btn');
     const success1Msg = document.getElementById('success1-msg');
-    
-    
+
     addMovieBtn.addEventListener('click', () => {
-      const movieId = new URLSearchParams(window.location.search).get('id');;
-    
+      const movieId = new URLSearchParams(window.location.search).get('id');
+
       fetch('/add-movie', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ movieId })
-      })
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            movieId
+          })
+        })
         .then(res => res.json())
         .then(data => {
           if (data.success) {
@@ -137,18 +241,19 @@ addReviewForm.addEventListener('submit', (event) => {
         })
         .catch(error => console.log(error));
     });
-    
-    
+
     addWatchBtn.addEventListener('click', () => {
-      const movieId = new URLSearchParams(window.location.search).get('id');;
-    
+      const movieId = new URLSearchParams(window.location.search).get('id');
+
       fetch('/add-watchlist', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ movieId })
-      })
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            movieId
+          })
+        })
         .then(res => res.json())
         .then(data => {
           if (data.success) {
@@ -161,9 +266,5 @@ addReviewForm.addEventListener('submit', (event) => {
         })
         .catch(error => console.log(error));
     });
-    
-    
-    
-    
-      </script>
+  </script>
 </html>

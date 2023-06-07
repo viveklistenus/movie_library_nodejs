@@ -7,22 +7,78 @@
 			background-image: url("/abc.jpg");
 			background-size: cover;
 			background-position: center;
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+		}
+
+		h1 {
+			text-align: center;
+			color: #333;
+		}
+
+		.container {
+			width: 300px;
+			margin: 0 auto;
+			margin-top: 100px;
+			background-color: #fff;
+			border-radius: 5px;
+			padding: 20px;
+		}
+
+		form label {
+			display: block;
+			margin-bottom: 5px;
+		}
+
+		form input[type="text"],
+		form input[type="password"] {
+			width: 100%;
+			padding: 8px;
+			margin-bottom: 10px;
+			border-radius: 4px;
+			border: 1px solid #ccc;
+		}
+
+		form input[type="submit"] {
+			width: 100%;
+			padding: 10px;
+			border-radius: 4px;
+			background-color: #4CAF50;
+			border: none;
+			color: #fff;
+			font-weight: bold;
+			cursor: pointer;
+		}
+
+		p {
+			text-align: center;
+			margin-top: 10px;
+		}
+
+		p a {
+			color: #4CAF50;
+			text-decoration: none;
 		}
 	</style>
 </head>
 <body>
-	<h1>Login</h1>
-	<% if (typeof error !== 'undefined') { %>
-		<p><%= error %></p>
-	<% } %>
-	
-	<form method="POST" action="/auth">
-		<label>Username:</label>
-		<input type="text" name="username"><br>
-		<label>Password:</label>
-		<input type="password" name="password"><br>
-		<input type="submit" value="Login">
-	</form>
-	<p>Don't have an account? <a href="/signup">Signup</a></p>
+	<div class="container">
+		<h1>Login</h1>
+		<% if (typeof error !== 'undefined') { %>
+			<p><%= error %></p>
+		<% } %>
+		
+		<form method="POST" action="/auth">
+			<label>Username:</label>
+			<input type="text" name="username">
+			
+			<label>Password:</label>
+			<input type="password" name="password">
+			
+			<input type="submit" value="Login">
+		</form>
+		<p>Don't have an account? <a href="/signup">Signup</a></p>
+	</div>
 </body>
 </html>

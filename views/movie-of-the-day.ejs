@@ -1,22 +1,85 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Movie of the Day</title>
-  </head>
-  <body>
-    <a href="/dashboard">Back</a>
-    <h1>Movie of the Day</h1>
-    <% if (movie) { %>
-      <h2><%= movie.title %></h2>
-      <p><%= movie.overview %></p>
-      <p>Release Date: <%= movie.release_date %></p>
-      <img src="<%= 'https://image.tmdb.org/t/p/w500' + movie.poster_path %>" alt="<%= movie.title %> Poster">
-    <% } else { %>
-      <p>No movie of the day found.</p>
-    <% } %>
-    
+<head>
+  <meta charset="UTF-8">
+  <title>Movie of the Day</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 20px;
+    }
 
+    a {
+      text-decoration: none;
+      color: #0071eb;
+      font-weight: bold;
+      margin-bottom: 10px;
+      display: inline-block;
+    }
 
-  </body>
+    .container {
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .poster-container {
+      flex: 0 0 300px;
+      margin-right: 20px;
+    }
+
+    .details-container {
+      flex: 1;
+      background-color: #fff;
+      border-radius: 4px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    p {
+      margin: 5px 0;
+    }
+
+    img {
+      display: block;
+      margin-bottom: 10px;
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      border-radius: 4px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <a href="/dashboard">Back</a>
+  <h1>Movie of the Day</h1>
+  <% if (movie) { %>
+    <div class="container">
+      <div class="poster-container">
+        <img src="<%= 'https://image.tmdb.org/t/p/w500' + movie.poster_path %>" alt="<%= movie.title %> Poster">
+      </div>
+      <div class="details-container">
+        <h2><%= movie.title %></h2>
+        <p><%= movie.overview %></p>
+        <p>Release Date: <%= movie.release_date %></p>
+      </div>
+    </div>
+  <% } else { %>
+    <p>No movie of the day found.</p>
+  <% } %>
+</body>
 </html>
