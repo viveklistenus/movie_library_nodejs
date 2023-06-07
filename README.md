@@ -3,7 +3,7 @@
 
 This is a movie library management system built on Node.js and a MySQL database, with a REST API and integration with the TMDB API for movie data.
 
-Features:
+# Features:
 
 * User authentication and registration
 * User profile management
