@@ -23,6 +23,14 @@ This is a movie library management system built on Node.js and a MySQL database,
 * TMDB API for movie data
 * Bootstrap for front-end styling
 
+
+# Live Project 
+* Movie Search - https://good-red-harp-seal-veil.cyclic.app/search
+* Complete Application with authentication - https://good-red-harp-seal-veil.cyclic.app/search
+* Most of the user session related functions are not working on the above links because i have use cyclic to host my node app and it does not allows sessions and cookies on free plan.
+
+
+
 # Screenshot
 * Login Page
 
