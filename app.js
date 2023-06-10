@@ -75,10 +75,10 @@ app.get('/tv_search', (req, res) => {
 
 
 const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '7895123',
-    database: 'test_database3'
+    host: 'sql9.freemysqlhosting.net',
+    user: 'sql9625095',
+    password: '6Ek5Qb1MfE',
+    database: 'sql9625095'
 });
 
 connection.connect((err) => {
