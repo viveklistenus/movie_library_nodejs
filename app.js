@@ -57,11 +57,7 @@ app.use(express.static('public'));
 
 
 app.get('/search', (req, res) => {
-  if (req.session.loggedin) {
-  res.render('search');}
-  else{
-    return res.send('Please login to view this page! <a href="/">Login here</a>');
-  }
+  res.render('search');
 });
 
 
