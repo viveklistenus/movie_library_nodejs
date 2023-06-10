@@ -14,14 +14,14 @@ This is a movie library management system built on Node.js and a MySQL database,
 * Create and participate in movie discussions
 
 
-Technologies used:
+# Technologies used:
 
-Node.js
-MySQL database
-Express.js framework
-bcrypt for password encryption
-TMDB API for movie data
-Bootstrap for front-end styling
+* Node.js
+* MySQL database
+* Express.js framework
+* bcrypt for password encryption
+* TMDB API for movie data
+* Bootstrap for front-end styling
 
 # Screenshot
 * Login Page
